@@ -17,12 +17,12 @@ for row in table.findAll('tr')[1:]:
     for cell in row.findAll('td'):
         list_of_cells.append(cell.text)
         if cell.find('a'):
-            list_of_cells.append ("https://www.oag.state.md.us/Press/" + cell.find('a')['href'])
+            list_of_cells.append ("https://www.oag.state.md.us/Press/" + cell.find('a')['href']) #change relative url
     list_of_rows.append(list_of_cells)
 
 outfile = open("./releases.csv", "wb")
 writer = csv.writer(outfile)
-writer.writerow(['date','title', 'url'])
+writer.writerow(['date','title', 'url']) #maybe change headers
 writer.writerows(list_of_rows)
 
 
