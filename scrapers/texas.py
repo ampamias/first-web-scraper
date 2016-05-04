@@ -1,0 +1,29 @@
+import csv
+import requests
+from BeautifulSoup import BeautifulSoup
+
+url = 'http://www.tdcj.state.tx.us/death_row/dr_scheduled_executions.html'
+
+response = requests.get(url)
+html = response.content
+
+soup = BeautifulSoup(html)
+
+table = soup.findAll('table')[0]
+
+list_of_rows = []
+for row in table.findAll('tr')[1:]: 
+    list_of_cells =[]
+    for cell in row.findAll('td'):
+        list_of_cells.append(cell.text)
+        if cell.find('a'):
+            list_of_cells.append ("http://www.tdcj.state.tx.us/death_row/dr_scheduled_executions.html" + cell.find('a')['href']) #change relative url
+    list_of_rows.append(list_of_cells)
+
+outfile = open("./executions.csv", "wb")
+writer = csv.writer(outfile)
+writer.writerow(['date','title', 'url']) #maybe change headers
+writer.writerows(list_of_rows)
+
+
+        
